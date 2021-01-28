@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal  Bank</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+    <link rel="shortcut icon" href="bank-icon.png" type="image/x-icon">
+    <style>
+        .login-form {
+            max-width: 600px;
+        }
+
+        #bank-area {
+            display: none;
+            max-width: 900px;
+        }
+
+        .box {
+            max-width: 300px;
+        }
+
+        .input-box {
+            max-width: 500px;
+        }
+    </style>
+</head>
+
+<body>
+    <section id="login-area" class="container">
+        <h1 class="text-center my-5">Welcome to Personal  Bank</h1>
+        <div class="login-form px-5 py-4 shadow-lg rounded-3 mx-auto">
+            <h4 class="Login">Login</h4>
+            <input type="text" name="" id="usermail" class="form-control my-3" placeholder="Enter your email">
+            <input type="password" name="" id="userpass" class="form-control my-3" placeholder="Enter your password">
+            <button class="btn btn-success px-5" id="enter">Enter</button>
+        </div>
+    </section>
+
+    <section id="bank-area" class="container">
+        <h2 class="text-center py-5">See your debit credit area</h2>
+        <div class="row mx-auto">
+            <div class="col-md-4 mx-auto">
+                <div class="mx-3 my-5 px-5 py-3 text-white bg-info rounded-3 box">
+                    <h4>Deposit</h4>
+                    <h3>$ <span id="deposit-amount">00</span></h3>
+                </div>
+            </div>
+            <div class="col-md-4 mx-auto">
+                <div class="mx-3 my-5 px-5 py-3 text-white bg-danger rounded-3 box">
+                    <h4>Withdraw</h4>
+                    <h3>$ <span id="withdraw-amount">00</span></h3>
+                </div>
+            </div>
+            <div class="col-md-4 mx-auto">
+                <div class="mx-3 my-5 px-5 py-3 text-white bg-success rounded-3 box">
+                    <h4>Balance</h4>
+                    <h3>$ <span id="balance-amount">00</span></h3>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 input-box">
+                <div class="m-4 px-5 py-3 shadow-lg rounded-3">
+                    <h3>Deposit</h3>
+                    <input type="text" name="" id="deposit-in" class="form-control my-3"
+                        placeholder="$ amount you want to deposit">
+                    <p class="small text-danger warning-text"> </p>
+                    <button class="btn btn-success px-4" id="deposit-in-btn">Deposit</button>
+                </div>
+            </div>
+            <div class="col-md-6 input-box">
+                <div class="m-4 px-5 py-3 shadow-lg rounded-3">
+                    <h3>Withdraw</h3>
+                    <input type="text" name="" id="withdraw-in" class="form-control my-3"
+                        placeholder="$ amount you want to withdraw">
+                    <p class="small text-danger warning-text-2"></p>
+                    <button class="btn btn-danger px-4" id="withdraw-in-btn">Withdraw</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW"
+        crossorigin="anonymous"></script>
+    <script>
+        // hide login area and showing bank area by clicking enter
+
+const enter = document.getElementById('enter');
+enter.addEventListener('click', () => {
+    // hide
+    const hideArea = document.getElementById('login-area');
+    hideArea.style.display = 'none';
+
+    // show
+    const showArea = document.getElementById('bank-area');
+    showArea.style.display = 'block';
+})
+
+
+// deposit
+
+const depositBtn = document.getElementById('deposit-in-btn');
+depositBtn.addEventListener('click', () => {
+    add('deposit-in', 'deposit-amount', 'warning-text');
+    add('deposit-in', 'balance-amount');
+
+    warning('deposit-in', 'warning-text');
+    warningNumber('deposit-in', 'warning-text');
+
+    emptyValue('deposit-in');
+});
+
+// withdraw
+
+const withdrawBtn = document.getElementById('withdraw-in-btn');
+withdrawBtn.addEventListener('click', () => {
+    add('withdraw-in', 'withdraw-amount');
+    deducate('withdraw-in', 'balance-amount');
+
+    warning('withdraw-in', 'warning-text-2');
+    warningNumber('withdraw-in', 'warning-text-2');
+
+    emptyValue('withdraw-in');
+});
+
+function emptyValue(id) {
+    target = document.getElementById(id);
+    target.value = '';
+}
+
+function add(id, addthen) {
+    const input = document.getElementById(id).value;
+    const inputNumber = parseFloat(input);
+
+    const addTo = document.getElementById(addthen).innerText;
+    const addToNumber = parseFloat(addTo);
+
+    const totalValue = inputNumber + addToNumber;
+    if (input !== '' && Number.isNaN(inputNumber) == false) {
+        document.getElementById(addthen).innerText = totalValue;
+    }
+}
+
+function deducate(id, deduct) {
+    const input = document.getElementById(id).value;
+    const inputNumber = parseFloat(input);
+
+    const deductTo = document.getElementById(deduct).innerText;
+    const deductToNumber = parseFloat(deductTo);
+
+    const totalValue = deductToNumber - inputNumber;
+    if (input !== '' && Number.isNaN(inputNumber) == false) {
+        document.getElementById(deduct).innerText = totalValue;
+    }
+}
+
+function warning(id, warnTo) {
+    const element = document.getElementById(id).value;
+    const warnToElement = document.getElementsByClassName(warnTo);
+
+
+    for (var i = 0; i < warnToElement.length; i++) {
+        if (element == '') {
+            warnToElement[i].innerText = "Input field can't be empty";
+        } else {
+            warnToElement[i].innerText = '';
+        }
+    }
+}
+
+
+function warningNumber(id, warnTo) {
+    input = document.getElementById(id).value;
+    const warnToElement = document.getElementsByClassName(warnTo);
+
+    for (var i = 0; i < warnToElement.length; i++) {
+        if (isNaN(input) == true) {
+            warnToElement[i].innerText = 'Please input number';
+        } else {
+            warnToElement[i].innerText = '';
+        }
+    }
+}
+    </script>
+</body>
+
+</html>
